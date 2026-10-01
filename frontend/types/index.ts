@@ -1,9 +1,21 @@
+export interface SourceRef {
+  chunkIndex: number;
+  excerpt: string;
+  score: number;
+}
+
+export interface ChatHistoryMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
   isStreaming?: boolean;
+  sources?: SourceRef[];
 }
 
 export interface PDFInfo {
@@ -24,4 +36,5 @@ export interface UploadResponse {
 export interface ModelOption {
   id: string;
   label: string;
+  tag?: string;
 }

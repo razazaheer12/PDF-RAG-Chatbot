@@ -1,5 +1,7 @@
-import { useState, useCallback } from 'react';
-import { Message } from '@/types';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { ChatHistoryMessage, Message } from '@/types';
+
+const HISTORY_LIMIT = 6;
 
 export function useChat(namespace: string) {
   const [messages, setMessages] = useState<Message[]>([
@@ -12,9 +14,23 @@ export function useChat(namespace: string) {
   ]);
   const [isStreaming, setIsStreaming] = useState(false);
 
+  const messagesRef = useRef<Message[]>([]);
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  const buildHistory = useCallback((): ChatHistoryMessage[] => {
+    return messagesRef.current
+      .filter((m) => m.id !== 'welcome' && !m.isStreaming && m.content.trim())
+      .slice(-HISTORY_LIMIT)
+      .map(({ role, content }) => ({ role, content }));
+  }, []);
+
   const sendMessage = useCallback(
   async (question: string, model?: string) => {
     if (!question.trim() || isStreaming) return;
+
+    const history = buildHistory();
 
     const userMsg: Message = {
       id: `user-${Date.now()}`,
@@ -41,7 +57,12 @@ export function useChat(namespace: string) {
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: question.trim(), namespace, model }),
+          body: JSON.stringify({
+            question: question.trim(),
+            namespace,
+            model,
+            history,
+          }),
         },
       );
       
@@ -70,6 +91,13 @@ export function useChat(namespace: string) {
                     m.id === assistantId
                       ? { ...m, content: m.content + data.token }
                       : m,
+                  ),
+                );
+              }
+              if (Array.isArray(data.sources)) {
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === assistantId ? { ...m, sources: data.sources } : m,
                   ),
                 );
               }
@@ -107,7 +135,7 @@ export function useChat(namespace: string) {
         );
       }
     },
-    [namespace, isStreaming],
+    [namespace, isStreaming, buildHistory],
   );
 
   return { messages, isStreaming, sendMessage };

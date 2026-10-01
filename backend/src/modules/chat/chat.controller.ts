@@ -22,12 +22,16 @@ export class ChatController {
     res.flushHeaders();
 
     try {
-      for await (const token of this.chatService.streamAnswer(
+      for await (const event of this.chatService.streamAnswer(
         body.question,
         body.namespace,
         body.model,
+        body.history,
       )) {
-        const payload = JSON.stringify({ token });
+        const payload =
+          event.type === 'sources'
+            ? JSON.stringify({ sources: event.sources })
+            : JSON.stringify({ token: event.token });
         res.write(`data: ${payload}\n\n`);
         (res as any).flush?.();
       }

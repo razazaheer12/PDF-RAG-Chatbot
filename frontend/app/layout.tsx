@@ -1,18 +1,24 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'PDF RAG Chat',
-  description: 'Chat with your PDF using Grok AI',
+  description: 'Chat with your PDF using OpenRouter',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-950 antialiased`}>{children}</body>
+      <body className={`${jakarta.variable} font-sans bg-canvas text-slate-200 antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }

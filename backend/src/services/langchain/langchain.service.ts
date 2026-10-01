@@ -64,18 +64,48 @@ export class LangchainService implements OnModuleInit {
     return vectors.length;
   }
 
-  async *queryRAG(question: string, namespace: string, model?: string): AsyncIterable<string> {
-  const queryEmbedding = await this.embedText(question);
-  const matches = await this.pinecone.querySimilar(queryEmbedding, 4, namespace);
+  async *queryRAG(
+    question: string,
+    namespace: string,
+    model?: string,
+    history: { role: 'user' | 'assistant'; content: string }[] = [],
+  ): AsyncIterable<RagStreamEvent> {
+    const queryEmbedding = await this.embedText(question);
+    const matches = await this.pinecone.querySimilar(queryEmbedding, 4, namespace);
 
-  const context = matches
-    .filter((m) => (m.score ?? 0) > 0.4)
-    .map((m) => (m.metadata?.text as string) ?? '')
-    .filter(Boolean)
-    .join('\n\n---\n\n');
+    const relevant = matches.filter(
+      (m) => (m.score ?? 0) > 0.4 && m.metadata?.text,
+    );
 
-  const systemPrompt = buildSystemPrompt(context);
-  this.logger.log(`Querying with ${matches.length} context chunks`);
-  yield* this.gemini.streamAnswer(systemPrompt, question, model);
+    const sources: RagSource[] = relevant.map((m) => ({
+      chunkIndex: (m.metadata?.chunkIndex as number) ?? 0,
+      excerpt: ((m.metadata?.text as string) ?? '').slice(0, 160).trim(),
+      score: Math.round((m.score ?? 0) * 100) / 100,
+    }));
+
+    if (sources.length > 0) {
+      yield { type: 'sources', sources };
+    }
+
+    const context = relevant
+      .map((m) => m.metadata?.text as string)
+      .join('\n\n---\n\n');
+
+    const systemPrompt = buildSystemPrompt(context);
+    this.logger.log(`Querying with ${relevant.length} context chunks`);
+
+    for await (const token of this.gemini.streamAnswer(systemPrompt, question, model, history)) {
+      yield { type: 'token', token };
+    }
+  }
 }
+
+export interface RagSource {
+  chunkIndex: number;
+  excerpt: string;
+  score: number;
 }
+
+export type RagStreamEvent =
+  | { type: 'sources'; sources: RagSource[] }
+  | { type: 'token'; token: string };

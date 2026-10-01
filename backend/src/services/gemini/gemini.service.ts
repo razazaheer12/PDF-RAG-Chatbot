@@ -18,6 +18,7 @@ export class GeminiService implements OnModuleInit {
     systemPrompt: string,
     userMessage: string,
     model: string = DEFAULT_MODEL,
+    history: { role: 'user' | 'assistant'; content: string }[] = [],
   ): AsyncIterable<string> {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -29,6 +30,7 @@ export class GeminiService implements OnModuleInit {
         model,
         messages: [
           { role: 'system', content: systemPrompt },
+          ...history,
           { role: 'user', content: userMessage },
         ],
         stream: true,
