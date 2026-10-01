@@ -14,6 +14,15 @@
 
 ## ✨ Features
 
+- 📄 **PDF Upload** — Drag & drop any PDF (up to 20MB)
+- 🧠 **RAG Pipeline** — PDF is chunked, embedded, and stored in Pinecone vector database
+- 💬 **Real-time Streaming** — Answers stream token by token like ChatGPT
+- 🔄 **Dynamic Model Switching** — Choose between multiple free LLM models (Nemotron, Gemma, GPT-OSS) directly from the chat UI in real-time
+- 🎯 **Context-Aware** — Answers strictly based on uploaded document
+- 🚫 **Out-of-Scope Detection** — Politely rejects questions unrelated to the PDF
+- 📱 **Fully Responsive** — Works on mobile, tablet, and desktop
+- 🌙 **Premium Dark UI** — Clean, modern interface built with Tailwind CSS
+
 ### 🧠 Contextual RAG Chatbot
 
 - **Multi-turn Conversation Memory** — Recent chat history (last 6 messages) is sent with every query, so follow-ups like *"explain the second point"* just work
@@ -34,6 +43,7 @@
 - **Glass Surfaces** — `backdrop-blur` panels, gradient message bubbles, and glowing accents throughout
 - **Plus Jakarta Sans Typography** — Loaded via `next/font`
 - **Fully Responsive** — Collapsible glass sidebar with blur overlay on mobile; fluid layouts on tablet and desktop
+>>>>>>> 2e47d04 (feat: update model selector with verified active free models, custom badges, and responsive UI fixes)
 
 ---
 
