@@ -8,7 +8,8 @@
 ![Pinecone](https://img.shields.io/badge/Pinecone-Vector_DB-green?style=for-the-badge)
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-Multi--Model_AI-blue?style=for-the-badge)
 
-<img width="946" height="410" alt="image" src="https://github.com/user-attachments/assets/9b0c21e5-9508-4cb8-a001-95792037d7a1" />
+<img width="947" height="410" alt="image" src="https://github.com/user-attachments/assets/c67e18c8-8320-4312-9f83-ef2eaf0634ba" />
+
 
 ---
 
@@ -43,7 +44,6 @@
 - **Glass Surfaces** — `backdrop-blur` panels, gradient message bubbles, and glowing accents throughout
 - **Plus Jakarta Sans Typography** — Loaded via `next/font`
 - **Fully Responsive** — Collapsible glass sidebar with blur overlay on mobile; fluid layouts on tablet and desktop
->>>>>>> 2e47d04 (feat: update model selector with verified active free models, custom badges, and responsive UI fixes)
 
 ---
 
@@ -203,15 +203,16 @@ http://localhost:3000
 
 > 🏠 Home Page
 
-<img width="946" height="410" alt="image" src="https://github.com/user-attachments/assets/9b0c21e5-9508-4cb8-a001-95792037d7a1" />
+<img width="947" height="410" alt="image" src="https://github.com/user-attachments/assets/c68818b1-0599-493f-9e1f-99ffc2bc017d" />
 
 > 📤 Upload Page
 
-<img width="942" height="412" alt="image" src="https://github.com/user-attachments/assets/2fc11879-6ed9-463e-8388-7530d7a800d7" />
+<img width="944" height="413" alt="image" src="https://github.com/user-attachments/assets/1799a7f5-c3b8-4b03-b51f-16025b4087e6" />
 
 > 💬 Chat Page
 
-<img width="952" height="413" alt="image" src="https://github.com/user-attachments/assets/2d73e7f9-0e5d-4b55-bedb-e6c6aab73c35" />
+<img width="947" height="413" alt="image" src="https://github.com/user-attachments/assets/1ca7cfaa-974a-4bbe-8b3f-bbae64a6da27" />
+
 
 ---
 
