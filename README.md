@@ -1,17 +1,25 @@
+<div align="center">
+
 # 🤖 PDF RAG Chatbot
 
-> An intelligent chatbot that lets you upload any PDF and have a real conversation with it — powered by RAG (Retrieval-Augmented Generation), Pinecone Vector DB, and multiple switchable LLM models via OpenRouter.
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![NestJS](https://img.shields.io/badge/NestJS-Express-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Pinecone](https://img.shields.io/badge/Pinecone-Vector%20DB-000000?style=for-the-badge&logo=pinecone&logoColor=white)](https://www.pinecone.io/)
+[![OpenRouter](https://img.shields.io/badge/OpenRouter-Multi--Model%20AI-6366F1?style=for-the-badge&logo=openai&logoColor=white)](https://openrouter.ai/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-![Next.js 16](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
-![NestJS](https://img.shields.io/badge/NestJS-Express-red?style=for-the-badge&logo=nestjs)
-![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=for-the-badge&logo=tailwindcss)
-![Pinecone](https://img.shields.io/badge/Pinecone-Vector_DB-green?style=for-the-badge)
-![OpenRouter](https://img.shields.io/badge/OpenRouter-Multi--Model_AI-blue?style=for-the-badge)
+</div>
 
-<img width="947" height="410" alt="image" src="https://github.com/user-attachments/assets/c67e18c8-8320-4312-9f83-ef2eaf0634ba" />
+## 📌 Overview
 
+**PDF RAG Chatbot** is an intelligent, full-stack web application that allows you to upload any PDF document and instantly interact with its content through natural conversation. Powered by Retrieval-Augmented Generation (RAG), Pinecone Vector Database, and multi-model LLM switching via OpenRouter, it turns static documents into dynamic, queryable knowledge.
 
----
+All document chunks are embedded and indexed with vector search precision, ensuring accurate source citations and contextual answers with zero setup or complexity.
+
+> *"Turn any PDF into an interactive, intelligent conversation."*
+
+<img width="947" height="410" alt="PDF RAG Chatbot Preview" src="https://github.com/user-attachments/assets/c67e18c8-8320-4312-9f83-ef2eaf0634ba" />
 
 ## ✨ Features
 
