@@ -13,9 +13,9 @@
 
 ## 📌 Overview
 
-**PDF RAG Chatbot** is an intelligent, full-stack web application that allows you to upload any PDF document and instantly interact with its content through natural conversation. Powered by Retrieval-Augmented Generation (RAG), Pinecone Vector Database, and multi-model LLM switching via OpenRouter, it turns static documents into dynamic, queryable knowledge.
+**PDF RAG Chatbot** is a full-stack web application that lets you upload any PDF and chat with its content in natural language. It uses Retrieval-Augmented Generation (RAG), the Pinecone vector database, and multi-model LLM switching through OpenRouter to turn static documents into queryable knowledge.
 
-All document chunks are embedded and indexed with vector search precision, ensuring accurate source citations and contextual answers with zero setup or complexity.
+Every document is split into chunks, embedded, and indexed for vector search, so answers are grounded in the uploaded file and backed by source citations.
 
 > *"Turn any PDF into an interactive, intelligent conversation."*
 
@@ -23,35 +23,27 @@ All document chunks are embedded and indexed with vector search precision, ensur
 
 ## ✨ Features
 
-- 📄 **PDF Upload** — Drag & drop any PDF (up to 20MB)
-- 🧠 **RAG Pipeline** — PDF is chunked, embedded, and stored in Pinecone vector database
-- 💬 **Real-time Streaming** — Answers stream token by token like ChatGPT
-- 🔄 **Dynamic Model Switching** — Choose between multiple free LLM models (Nemotron, Gemma, GPT-OSS) directly from the chat UI in real-time
-- 🎯 **Context-Aware** — Answers strictly based on uploaded document
-- 🚫 **Out-of-Scope Detection** — Politely rejects questions unrelated to the PDF
-- 📱 **Fully Responsive** — Works on mobile, tablet, and desktop
-- 🌙 **Premium Dark UI** — Clean, modern interface built with Tailwind CSS
-
 ### 🧠 Contextual RAG Chatbot
 
-- **Multi-turn Conversation Memory** — Recent chat history (last 6 messages) is sent with every query, so follow-ups like *"explain the second point"* just work
-- **Source Citations** — Every answer shows sleek `Source: Chunk N` pills with hoverable text excerpts and relevance scores, streamed alongside the answer via SSE
-- **Real-time Streaming** — Answers stream token by token like ChatGPT
-- **Dynamic Model Switching** — Swap between free LLMs (Nemotron, Qwen, Auto Router) mid-conversation via a custom popover selector with performance badges (`Large`, `Most Powerful`, `RAG Specialist`, …)
-- **Out-of-Scope Guardrails** — Queries unrelated to the uploaded PDF get a polite automatic fallback; answers stay strictly grounded in document context
+- 🔎 **Retrieval-Augmented Answers** — The PDF is chunked, embedded, and stored in Pinecone; answers are built only from the most relevant chunks
+- 💬 **Real-time Streaming** — Answers stream token by token via Server-Sent Events (SSE)
+- 🧵 **Multi-turn Conversation Memory** — The last 6 messages are sent with every query, so follow-ups like *"explain the second point"* just work
+- 📌 **Source Citations** — Every answer shows `Source: Chunk N` pills with hoverable text excerpts and relevance scores, streamed to the UI before the answer itself
+- 🔄 **Dynamic Model Switching** — Swap between free LLMs (Nemotron, Qwen, Auto Router) mid-conversation through a custom popover selector with performance badges (`Large`, `Most Powerful`, `RAG Specialist`, …)
+- 🚫 **Out-of-Scope Guardrails** — Questions unrelated to the uploaded PDF get a polite automatic fallback, and answers stay strictly grounded in document context
 
 ### 📄 PDF Processing
 
-- **Interactive Drag & Drop Zone** — Animated glowing dashed borders while dragging, pulsing upload icon
-- **File Preview Badge** — Selected file shown with name and size before/during upload
-- **Animated Progress Bar** — Gradient shimmer progress while the PDF is parsed, chunked, embedded, and indexed (up to 20MB)
+- **Interactive Drag & Drop Zone** — Animated glowing dashed borders while dragging and a pulsing upload icon
+- **File Preview Badge** — The selected file is shown with its name and size before and during upload
+- **Animated Progress Bar** — A gradient shimmer progress bar runs while the PDF is parsed, chunked, embedded, and indexed (PDFs up to 20MB)
 
 ### 🎨 Modern Glassmorphism UI
 
 - **Premium Dark Theme** — Linear/Vercel-style `#090d16` canvas with ambient radial glows and a masked grid backdrop
 - **Glass Surfaces** — `backdrop-blur` panels, gradient message bubbles, and glowing accents throughout
 - **Plus Jakarta Sans Typography** — Loaded via `next/font`
-- **Fully Responsive** — Collapsible glass sidebar with blur overlay on mobile; fluid layouts on tablet and desktop
+- **Fully Responsive** — Collapsible glass sidebar with blur overlay on mobile, and fluid layouts on tablet and desktop
 
 ---
 
@@ -64,7 +56,7 @@ NestJS Backend receives file
        ↓
 pdf-parse extracts text
        ↓
-Text split into chunks (1000 tokens, 200 overlap)
+Text split into chunks (1000 characters, 200 overlap)
        ↓
 multilingual-e5-large embeds each chunk (1024-dim)
        ↓
@@ -91,9 +83,9 @@ Answer streams back to frontend in real-time (SSE)
 |-------|-----------|
 | **Frontend** | Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Plus Jakarta Sans |
 | **Backend** | NestJS on Node.js / Express, TypeScript |
-| **AI Engine** | OpenRouter API — multi-model support (switchable at runtime) |
-| **Vector Search / RAG** | Chunking & citation pipeline with dynamic context buffering (conversation memory) |
-| **Embeddings** | multilingual-e5-large (Xenova/Transformers.js, 1024-dim) |
+| **LLM Provider** | OpenRouter API — multi-model support, switchable at runtime |
+| **RAG Pipeline** | Chunking, similarity retrieval, source citations, and conversation memory (last 6 messages) |
+| **Embeddings** | multilingual-e5-large (Xenova / Transformers.js, 1024-dim) |
 | **Vector DB** | Pinecone |
 | **PDF Parsing** | pdf-parse |
 | **Streaming** | Server-Sent Events (SSE) |
@@ -123,7 +115,7 @@ pdf-rag-chatbot/
         └── services/
             ├── langchain/      # RAG pipeline, embeddings & prompts
             ├── pinecone/       # Vector DB operations
-            └── gemini/         # LLM integration (OpenRouter API)
+            └── gemini/         # LLM integration (OpenRouter API — folder name is a legacy label)
 ```
 
 ---
@@ -155,14 +147,14 @@ Fill in your keys in `backend/.env`:
 
 ```env
 PORT=5000
-GEMINI_API_KEY=your_openrouter_api_key   # OpenRouter API key (sk-or-...)
+GEMINI_API_KEY=your_openrouter_api_key   # Holds your OpenRouter key (sk-or-...). The variable name is a legacy label.
 PINECONE_API_KEY=your_pinecone_api_key
 PINECONE_INDEX_NAME=pdf-rag-index-v2
 PINECONE_DIMENSION=1024
 NODE_ENV=development
 ```
 
-Start the backend (first boot downloads the embedding model, ~1 min):
+Start the backend (the first boot downloads the embedding model, about 1 minute):
 
 ```bash
 npm run start:dev
@@ -197,11 +189,11 @@ http://localhost:3000
 
 ## 🔄 How It Works
 
-1. **Upload** — User drags & drops a PDF on `/upload`; progress streams in the preview banner
-2. **Processing** — Backend parses, chunks, and embeds the PDF into Pinecone (metadata kept for citations)
-3. **Chat** — User is redirected to `/chat/[namespace]`
-4. **Model Selection** — User picks an LLM from the popover selector (switchable anytime, tagged Fast / Balanced / Large / Most Powerful)
-5. **Query** — Frontend sends the question **plus the last 6 messages of history**; backend retrieves the top 4 relevant chunks
+1. **Upload** — The user drags and drops a PDF on `/upload`; progress is shown in the preview banner
+2. **Processing** — The backend parses, chunks, and embeds the PDF into Pinecone, keeping metadata for citations
+3. **Chat** — The user is redirected to `/chat/[namespace]`
+4. **Model Selection** — The user picks an LLM from the popover selector and can switch at any time (tagged Fast / Balanced / Large / Most Powerful)
+5. **Query** — The frontend sends the question **plus the last 6 messages of history**; the backend retrieves the top 4 relevant chunks
 6. **Citations** — Matched chunk references are streamed to the UI first and rendered as `Source: Chunk N` pills under the answer
 7. **Answer** — The selected LLM generates a context-aware answer (history included for follow-ups), streamed token by token via SSE
 
@@ -221,7 +213,6 @@ http://localhost:3000
 
 <img width="947" height="413" alt="image" src="https://github.com/user-attachments/assets/1ca7cfaa-974a-4bbe-8b3f-bbae64a6da27" />
 
-
 ---
 
 ## ⚙️ Environment Variables
@@ -229,7 +220,7 @@ http://localhost:3000
 | Variable | Location | Description |
 |----------|----------|-------------|
 | `PORT` | backend `.env` | Backend server port (default: 5000) |
-| `GEMINI_API_KEY` | backend `.env` | **OpenRouter API key** (used for all LLM calls) |
+| `GEMINI_API_KEY` | backend `.env` | **OpenRouter API key**, used for all LLM calls (legacy variable name) |
 | `PINECONE_API_KEY` | backend `.env` | Pinecone database API key |
 | `PINECONE_INDEX_NAME` | backend `.env` | Pinecone index name (1024-dim, cosine) |
 | `PINECONE_DIMENSION` | backend `.env` | Embedding dimensions (1024) |
@@ -243,9 +234,9 @@ http://localhost:3000
 - **Chunk Size:** 1000 characters with 200 overlap
 - **Embedding Model:** `multilingual-e5-large` (1024 dimensions)
 - **Similarity Search:** Top-4 chunks retrieved per query
-- **Similarity Threshold:** Score > 0.4 filtered
-- **Conversation Memory:** Last 6 messages replayed to the LLM for follow-up understanding (dynamic context buffering)
-- **Citations:** Chunk index, 160-char excerpt, and relevance score streamed as an SSE `sources` event before the answer tokens
+- **Similarity Threshold:** Chunks with a score of 0.4 or lower are filtered out
+- **Conversation Memory:** The last 6 messages are replayed to the LLM for follow-up understanding
+- **Citations:** Chunk index, 160-character excerpt, and relevance score are streamed as an SSE `sources` event before the answer tokens
 - **LLM Models (switchable via UI):**
   - `nvidia/nemotron-3-super-120b-a12b:free` — Large (default)
   - `nvidia/nemotron-3-ultra-550b-a55b:free` — 🧠 Most Powerful
@@ -253,6 +244,16 @@ http://localhost:3000
   - `nvidia/nemotron-3.5-lightning:free` — ⚡ 1M Context
   - `openrouter/free` — 🌐 Auto Router (Always Online)
 - **Streaming:** Server-Sent Events (SSE) for real-time token streaming
+
+> ℹ️ Free models on OpenRouter change over time. If a model ID stops working, update the list in the backend model configuration or use the Auto Router option.
+
+---
+
+## ⚠️ Known Limitations
+
+- **Text-based PDFs only** — Text is extracted with `pdf-parse`, so scanned or image-only PDFs are not supported (no OCR)
+- **Upload size** — PDFs are limited to 20MB
+- **Free-tier models** — Availability and response speed depend on OpenRouter's free models
 
 ---
 
